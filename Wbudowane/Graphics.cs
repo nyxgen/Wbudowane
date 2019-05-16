@@ -38,8 +38,12 @@ namespace Wbudowane
                 {
                     Point position = board[i, j].Position;
                     Size size = board[i, j].Size;
-                    Color color = Color.FromArgb(board[i,j].State, board[i, j].State, board[i, j].State);
-                    for(int k = 0; k < size.Width; k++)
+                    Color color;
+                    if (board[i, j].State == 0)
+                        color = Color.FromArgb(board[i, j].State, board[i, j].State, board[i, j].State);
+                    else
+                        color = Color.FromArgb(255 - board[i, j].State, board[i, j].State, board[i, j].State);
+                    for (int k = 0; k < size.Width; k++)
                     {
                         for(int l = 0; l < size.Height; l++)
                         {
@@ -49,6 +53,12 @@ namespace Wbudowane
                 }
             }
             graphics.DrawImage(bitmap, 0,0);
+        }
+
+        public void graphicsClear()
+        {
+            graphics.Clear(Color.Black);
+            bitmap = new Bitmap(pictureBox.Width, pictureBox.Height);
         }
     }
 }
