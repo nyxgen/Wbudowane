@@ -128,9 +128,6 @@ namespace Wbudowane
             if (numberOfTilesInColumn > size.Height)
                 return;
 
-            numberOfTilesInRow += 1;
-            numberOfTilesInColumn += 1;
-
             int actSize;
             if (size.Width > size.Height)
                 actSize = size.Width;
@@ -144,14 +141,14 @@ namespace Wbudowane
                     tiles[j * size.Width + i] = new Tile(new Point((int)(Math.Floor(1.0 * i * drawSize.Width / actSize)), (int)(Math.Floor(1.0 * j * drawSize.Height / actSize))), new Size((int)(Math.Ceiling(1.0 * drawSize.Width / actSize)), (int)(Math.Ceiling(1.0 * drawSize.Height / actSize))));
                 }
             }
-            int dx = size.Width/(numberOfTilesInRow);
-            int dy = size.Height/(numberOfTilesInColumn);
-            int dS = 255 / (numberOfTilesInColumn * numberOfTilesInRow);
-            for (int i = 0; i < numberOfTilesInRow; i++)
+            double dx = size.Width/(numberOfTilesInRow);
+            double dy = size.Height/(numberOfTilesInColumn);
+            Random rand = new Random();
+            for (int i = 1; i < numberOfTilesInRow; i++)
             {
-              for(int j = 0; j < numberOfTilesInColumn; j++)
+              for(int j = 1; j < numberOfTilesInColumn; j++)
                 {
-                    tiles[dy*j * size.Width + dx * i].State = dS * i * j;
+                    tiles[(int)(Math.Floor(dy*j * size.Width + dx * i))].State = rand.Next(255);
                 }
             }
         }
