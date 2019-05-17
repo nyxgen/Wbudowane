@@ -192,6 +192,8 @@ namespace Wbudowane
                 {
                     string response = Prompt.ShowDialog("Width:", "");
                     sizeX = Convert.ToInt32(response);
+                    if (sizeX <= 0)
+                        throw new ArgumentOutOfRangeException();
                     ready = false;
                 }
                 catch (Exception exception)
@@ -207,6 +209,8 @@ namespace Wbudowane
                 {
                     string response = Prompt.ShowDialog("Height:", "");
                     sizeY = Convert.ToInt32(response);
+                    if (sizeY <= 0)
+                        throw new ArgumentOutOfRangeException();
                     ready = false;
                 }
                 catch (Exception exception)

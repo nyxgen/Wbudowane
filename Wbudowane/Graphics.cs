@@ -43,11 +43,12 @@ namespace Wbudowane
                         color = Color.FromArgb(board[i, j].State, board[i, j].State, board[i, j].State);
                     else
                         color = Color.FromArgb(255 - board[i, j].State, board[i, j].State, board[i, j].State);
-                    for (int k = 0; k < size.Width; k++)
+                    for (int k = 0; k < size.Width+1; k++)
                     {
-                        for(int l = 0; l < size.Height; l++)
+                        for(int l = 0; l < size.Height+1; l++)
                         {
-                            bitmap.SetPixel(position.X + k, position.Y + l, color);
+                            if((position.X + k) < bitmap.Size.Width && (position.Y + l) < bitmap.Size.Height)
+                                  bitmap.SetPixel(position.X + k, position.Y + l, color);
                         }
                     }
                 }

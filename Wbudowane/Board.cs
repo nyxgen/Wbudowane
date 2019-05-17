@@ -50,10 +50,9 @@ namespace Wbudowane
         {
             get
             {
-                Tile[] tmp = tiles.ToArray();
                 if (i < size.Width && j < size.Height)
                 {
-                    return ref tmp[j * size.Width + i];
+                    return ref tiles[j * size.Width + i];
                 }
                 else
                 {
