@@ -9,13 +9,11 @@ namespace Wbudowane
 {
     public class Board
     {
-        Size drawSize;
         Size size;
         Tile[] tiles;
-        public Board(Size size, Size drawSize)
+        public Board(Size size)
         {
             this.size = size;
-            this.drawSize = drawSize;
             tiles = new Tile[size.Height * size.Width];
             int actSize;
             if (size.Width > size.Height)
@@ -27,7 +25,7 @@ namespace Wbudowane
             {
                 for (uint j = 0; j < size.Height; j++)
                 {
-                    tiles[j * size.Width + i] = new Tile(new Point((int)(Math.Floor(1.0 * i * drawSize.Width / actSize)), (int)(Math.Floor(1.0 * j * drawSize.Height / actSize))), new Size((int)(Math.Ceiling(1.0 * drawSize.Width / actSize)), (int)(Math.Ceiling(1.0 * drawSize.Height / actSize))));
+                    tiles[j * size.Width + i] = new Tile();
                 }
             }
         }
@@ -35,7 +33,6 @@ namespace Wbudowane
         public Board(ref Board board)
         {
             this.size = board.size;
-            this.drawSize = board.drawSize;
             tiles = new Tile[size.Height * size.Width];
             for (int i = 0; i < size.Width; i++)
             {
@@ -69,165 +66,198 @@ namespace Wbudowane
             }
         }
 
-        public Size DrawSize
+        public void randomInit(int numberOfTiles)
         {
-            get
+            for (int i = 0; i < size.Width; i++)
             {
-
-                return drawSize;
-            }
-        }
-
-        public void randomInit(int numberOfTiles, bool clear)
-        {
-            int actSize;
-            if (size.Width > size.Height)
-                actSize = size.Width;
-            else
-                actSize = size.Height;
-
-            if (clear)
-            {
-                for (int i = 0; i < size.Width; i++)
+                for (int j = 0; j < size.Height; j++)
                 {
-                    for (int j = 0; j < size.Height; j++)
-                    {
-                        tiles[j * size.Width + i] = new Tile(new Point((int)(Math.Floor(1.0 * i * drawSize.Width / actSize)), (int)(Math.Floor(1.0 * j * drawSize.Height / actSize))), new Size((int)(Math.Floor(1.0 * drawSize.Width / actSize)), (int)(Math.Floor(1.0 * drawSize.Height / actSize))));
-                    }
+                    tiles[j * size.Width + i].State = Tuple.Create<int, int, int>(0, 0, 0);
                 }
             }
-
-            Random r = new Random();
+            int m = 0;
             int error = 0;
             for (int i = 0; i < numberOfTiles; i++)
             {
-                int rx = r.Next(size.Width);
-                int ry = r.Next(size.Height);
-                int state = r.Next(254);
-                if (tiles[ry * size.Width + rx].State == 0)
+                int rx = RandomMachine.Random.Next(size.Width-1);
+                int ry = RandomMachine.Random.Next(size.Height-1);
+                if (!tiles[ry * size.Width + rx].Alive)
                 {
-                    tiles[ry * size.Width + rx].State = 1 + state;
+                    tiles[ry * size.Width + rx].State = Tuple.Create<int,int,int>(1 + RandomMachine.Random.Next(254), 1 + RandomMachine.Random.Next(254), 1 + RandomMachine.Random.Next(254));
                 }
                 else
                 {
                     error++;
                     i--;
                 }
+                m = i + 1;
                 if (error > size.Width * size.Height)
                 {
+                   
                     i = numberOfTiles;
                 }
             }
+
+            for (int i = 0; i < size.Width; i++)
+            {
+                for (int k = 0; k < size.Height; k++)
+                {
+                    if (m < numberOfTiles && !tiles[k * size.Width + i].Alive)
+                    {
+                        tiles[k * size.Width + i].State = Tuple.Create<int, int, int>(1 + RandomMachine.Random.Next(254), 1 + RandomMachine.Random.Next(254), 1 + RandomMachine.Random.Next(254));
+                        m++;
+                    }
+                }
+            }
+            if (m < numberOfTiles)
+             Prompt.ShowDialog("Wylosowano " + m.ToString());
         }
 
         public void homogeneousInit(int numberOfTilesInRow, int numberOfTilesInColumn)
         {
-
-            if (numberOfTilesInRow > size.Width)
+            if(numberOfTilesInRow > size.Width || numberOfTilesInColumn > size.Height)
+            {
+                Prompt.ShowDialog("Podano błędne dane");
                 return;
-            if (numberOfTilesInColumn > size.Height)
-                return;
-
-            int actSize;
-            if (size.Width > size.Height)
-                actSize = size.Width;
-            else
-                actSize = size.Height;
+            }
 
             for (int i = 0; i < size.Width; i++)
             {
                 for (int j = 0; j < size.Height; j++)
                 {
-                    tiles[j * size.Width + i] = new Tile(new Point((int)(Math.Floor(1.0 * i * drawSize.Width / actSize)), (int)(Math.Floor(1.0 * j * drawSize.Height / actSize))), new Size((int)(Math.Ceiling(1.0 * drawSize.Width / actSize)), (int)(Math.Ceiling(1.0 * drawSize.Height / actSize))));
+                    tiles[j * size.Width + i].State = Tuple.Create<int, int, int>(0, 0, 0);
                 }
             }
-            double dx = size.Width/(numberOfTilesInRow);
-            double dy = size.Height/(numberOfTilesInColumn);
-            Random rand = new Random();
-            for (int i = 1; i < numberOfTilesInRow; i++)
+
+            double dx = (1.0*size.Width)/(numberOfTilesInRow+1);
+            double dy = (1.0*size.Height)/(numberOfTilesInColumn+1);
+            for (int i = 1; i < numberOfTilesInRow+1; i++)
             {
-              for(int j = 1; j < numberOfTilesInColumn; j++)
+              for(int j = 1; j < numberOfTilesInColumn+1; j++)
                 {
-                    tiles[(int)(Math.Floor(dy*j * size.Width + dx * i))].State = rand.Next(255);
+                    tiles[(int)(Math.Floor(dy*j) * size.Width+Math.Floor(dx * i))].State = Tuple.Create<int,int,int>(RandomMachine.Random.Next(255), RandomMachine.Random.Next(255), RandomMachine.Random.Next(255));
                 }
             }
         }
 
-        public void radiusInit(int radius, int numberOfTiles)
+        public void radiusInit(int radius, int numberOfTiles, bool periodic)
         {
-            int actSize;
-            if (size.Width > size.Height)
-                actSize = size.Width;
-            else
-                actSize = size.Height;
-
             for (int i = 0; i < size.Width; i++)
             {
                 for (int j = 0; j < size.Height; j++)
                 {
-                    tiles[j * size.Width + i] = new Tile(new Point((int)(Math.Floor(1.0 * i * drawSize.Width / actSize)), (int)(Math.Floor(1.0 * j * drawSize.Height / actSize))), new Size((int)(Math.Ceiling(1.0 * drawSize.Width / actSize)), (int)(Math.Ceiling(1.0 * drawSize.Height / actSize))));
+                    tiles[j * size.Width + i].State = Tuple.Create<int, int, int>(0, 0, 0);
                 }
             }
 
-            Random r = new Random();
             int error = 0;
             for (int i = 0; i < numberOfTiles; i++)
             {
-                int rx = r.Next(size.Width);
-                int ry = r.Next(size.Height);
-                int state = r.Next(254);
-                if (tiles[rx * size.Width + rx].State == 0)
+                if (periodic)
                 {
-                    int minX, maxX, minY, maxY;
-                    if (rx - radius < 0)
-                        minX = 0;
-                    else
-                        minX = rx - radius;
-
-                    if (rx + radius > size.Width - 1)
-                        maxX = size.Width - 1;
-                    else
-                        maxX = rx + radius;
-
-                    if (ry - radius < 0)
-                        minY = 0;
-                    else
-                        minY = ry - radius;
-
-                    if (ry + radius > size.Height - 1)
-                        maxY = size.Height - 1;
-                    else
-                        maxY = ry + radius;
-
-                    bool isInRange = false;
-                    for (int j = minX; j <= maxX; j++)
+                    int rx = RandomMachine.Random.Next(size.Width - 1);
+                    int ry = RandomMachine.Random.Next(size.Height - 1);
+                    if (!tiles[ry * size.Width + rx].Alive)
                     {
-                        for (int k = minY; k <= maxY; k++)
+                        bool inRange = false;
+                        for(int m = 0; m < size.Width; ++m)
                         {
-                            if (tiles[k * size.Width + j].State != 0)
-                                isInRange = true;
+                            for(int n = 0; n < size.Height; ++n)
+                            {
+                                if (tiles[n * size.Width + m].Alive)
+                                {
+                                    double x = Math.Abs(rx - m);
+                                    if (size.Width - x < x)
+                                        x = size.Width - x;
+                                    double y = Math.Abs(ry - n);
+                                    if (size.Height - y < y)
+                                        y = size.Height - y;
+                                    double r = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+                                    if (r <= radius)
+                                    {
+                                        inRange = true;
+                                        m = size.Width;
+                                        n = size.Height;
+                                    }
+                                }
+                            }
                         }
+                        if(inRange)
+                        {
+                            error++;
+                            i--;
+                        }
+                        else
+                            tiles[ry * size.Width + rx].State = Tuple.Create<int, int, int>(1 + RandomMachine.Random.Next(254), 1 + RandomMachine.Random.Next(254), 1 + RandomMachine.Random.Next(254));
                     }
-                    if (isInRange)
+                    else
                     {
                         error++;
                         i--;
                     }
-                    else
-                        tiles[ry * size.Width + rx].State = 1 + state;
+                    if (error > size.Width * size.Height)
+                    {
+                        Prompt.ShowDialog("Wylosowano " + i);
+                        i = numberOfTiles;
+                    }
                 }
                 else
                 {
-                    error++;
-                    i--;
-                }
-                if (error > size.Width * size.Height)
-                {
-                    i = numberOfTiles;
+                    int rx = RandomMachine.Random.Next(size.Width - 1);
+                    int ry = RandomMachine.Random.Next(size.Height - 1);
+                    if (!tiles[ry * size.Width + rx].Alive)
+                    {
+                        bool inRange = false;
+                        for (int m = 0; m < size.Width; ++m)
+                        {
+                            for (int n = 0; n < size.Height; ++n)
+                            {
+                                if (tiles[n * size.Width + m].Alive)
+                                {
+                                    double x = Math.Abs(rx - m);
+                                    double y = Math.Abs(ry - n);
+                                    double r = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+                                    if (r <= radius)
+                                    {
+                                        inRange = true;
+                                        m = size.Width;
+                                        n = size.Height;
+                                    }
+                                }
+                            }
+                        }
+                        if (inRange)
+                        {
+                            error++;
+                            i--;
+                        }
+                        else
+                            tiles[ry * size.Width + rx].State = Tuple.Create<int, int, int>(1 + RandomMachine.Random.Next(254), 1 + RandomMachine.Random.Next(254), 1 + RandomMachine.Random.Next(254));
+                    }
+                    else
+                    {
+                        error++;
+                        i--;
+                    }
+                    if (error > size.Width * size.Height)
+                    {
+                        Prompt.ShowDialog("Wylosowano " + i);
+                        i = numberOfTiles;
+                    }
                 }
             }
         }
 
+        public void clear()
+        {
+            for (int i = 0; i < size.Width; i++)
+            {
+                for (int j = 0; j < size.Height; j++)
+                {
+                    tiles[j * size.Width + i].State = Tuple.Create<int, int, int>(0, 0, 0);
+                }
+            }
+        }
 
     }
 }

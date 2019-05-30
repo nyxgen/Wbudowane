@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.438
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wbudowane", "Wbudowane\Wbudowane.csproj", "{59A6B3EC-D37F-406D-A264-FAB0C370B15A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wieloskalowe", "Wbudowane\Wieloskalowe.csproj", "{59A6B3EC-D37F-406D-A264-FAB0C370B15A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

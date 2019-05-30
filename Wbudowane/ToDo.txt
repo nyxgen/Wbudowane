@@ -1,3 +1,1 @@
 ﻿Warning przy losowaniu z promieniem gdy nie wylosowano wszystkich
-Przy losowaniu każda komórka ma mieć swój kolor
-Poprawić homogeneous - pomija 1 punkt

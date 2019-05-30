@@ -9,27 +9,37 @@ namespace Wbudowane
 {
     public class Tile
     {
-        int state;
-        Point position;
-        Size size;
-        public Tile(Point position, Size size)
+        Tuple <int, int, int>state;
+        List<Tile> neighbours;
+        bool alive;
+        PointF centerOfMass;
+        public Tile()
         {
-            state = 0;
-            this.position = position;
-            this.size = size;
+            neighbours = new List<Tile>();
+            state = Tuple.Create<int,int,int>(0,0,0);
+            alive = false;
+            centerOfMass = new PointF(Convert.ToSingle(RandomMachine.Random.NextDouble()), Convert.ToSingle(RandomMachine.Random.NextDouble()));
         }
 
         public Tile(ref Tile tile)
         {
             state = tile.State;
-            position = tile.Position;
-            size = tile.Size;
+            neighbours = new List<Tile>();
+            if (state.Item1 == 0 && state.Item2 == 0 && state.Item3 == 0)
+                alive = false;
+            else
+                alive = true;
+            centerOfMass = tile.CenterOfMass;
         }
-        public int State
+        public Tuple<int,int,int> State
         {
             set
             {
                 state = value;
+                if (state.Item1 == 0 && state.Item2 == 0 && state.Item3 == 0)
+                    alive = false;
+                else
+                    alive = true;
             }
             get
             {
@@ -37,27 +47,32 @@ namespace Wbudowane
             }
         }
 
-        public Point Position
+        public bool Alive
         {
-            set
-            {
-                position = value;
-            }
             get
             {
-                return position;
+                return alive;
             }
         }
-       
-        public Size Size
+
+        public PointF CenterOfMass
         {
-            set
-            {
-                size = value;
-            }
             get
             {
-                return size;
+                return centerOfMass;
+            }
+        }
+
+        public void newCenterOfMass()
+        {
+            centerOfMass = new PointF(Convert.ToSingle(RandomMachine.Random.NextDouble()), Convert.ToSingle(RandomMachine.Random.NextDouble()));
+        }
+
+        public ref List<Tile> Neighbours
+        {
+            get
+            {
+                return ref neighbours;
             }
         }
     }
