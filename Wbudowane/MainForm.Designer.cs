@@ -49,6 +49,7 @@
             this.itterationGroupBox = new System.Windows.Forms.GroupBox();
             this.displayGroupBox = new System.Windows.Forms.GroupBox();
             this.centerOfMassCheckBox = new System.Windows.Forms.CheckBox();
+            this.monteCarloButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).BeginInit();
             this.bcGroupBox.SuspendLayout();
             this.drawingToolsGroupBox.SuspendLayout();
@@ -287,7 +288,7 @@
             this.displayGroupBox.Controls.Add(this.centerOfMassCheckBox);
             this.displayGroupBox.Location = new System.Drawing.Point(571, 452);
             this.displayGroupBox.Name = "displayGroupBox";
-            this.displayGroupBox.Size = new System.Drawing.Size(143, 110);
+            this.displayGroupBox.Size = new System.Drawing.Size(143, 52);
             this.displayGroupBox.TabIndex = 24;
             this.displayGroupBox.TabStop = false;
             this.displayGroupBox.Text = "Display";
@@ -308,12 +309,23 @@
             this.centerOfMassCheckBox.UseVisualStyleBackColor = true;
             this.centerOfMassCheckBox.CheckedChanged += new System.EventHandler(this.centerOfMassCheckBox_CheckedChanged);
             // 
+            // monteCarloButton
+            // 
+            this.monteCarloButton.Location = new System.Drawing.Point(601, 510);
+            this.monteCarloButton.Name = "monteCarloButton";
+            this.monteCarloButton.Size = new System.Drawing.Size(88, 23);
+            this.monteCarloButton.TabIndex = 1;
+            this.monteCarloButton.Text = "Monte Carlo";
+            this.monteCarloButton.UseVisualStyleBackColor = true;
+            this.monteCarloButton.Click += new System.EventHandler(this.monteCarloButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.ClientSize = new System.Drawing.Size(719, 581);
+            this.Controls.Add(this.monteCarloButton);
             this.Controls.Add(this.displayGroupBox);
             this.Controls.Add(this.itterationGroupBox);
             this.Controls.Add(this.initGroupBox);
@@ -359,6 +371,7 @@
         private System.Windows.Forms.ComboBox neighbourhoodComboBox;
         private System.Windows.Forms.GroupBox displayGroupBox;
         private System.Windows.Forms.CheckBox centerOfMassCheckBox;
+        private System.Windows.Forms.Button monteCarloButton;
     }
 }
 

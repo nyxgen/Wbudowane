@@ -615,5 +615,75 @@ namespace Wbudowane
            }
        }
 
+        public static void monteCarlo(ref Board board)
+        {
+            int[] X = new int[board.Size.Width * board.Size.Height];
+            int[] Y = new int[board.Size.Width * board.Size.Height];
+            for (int i = 0; i < board.Size.Width; ++i)
+            {
+                for (int j = 0; j < board.Size.Height; ++j)
+                {
+                    X[i] = i;
+                    Y[j] = j;
+                }
+            }
+            shuffle(ref X);
+            shuffle(ref Y);
+
+            for (int i = 0; i < board.Size.Width; ++i)
+            {
+                for (int j = 0; j < board.Size.Height; ++j)
+                {
+                   
+                    List<Tuple<Tuple<int, int, int>, int>> colors = new List<Tuple<Tuple<int, int, int>, int>>();
+                    for (int k = 0; k < board[X[i], Y[j]].Neighbours.Count; ++k)
+                    {
+                        bool exist = false;
+                        for(int l = 0; l < colors.Count; ++l)
+                        {
+                            if(colors[l].Item1 == board[X[i], Y[j]].Neighbours[k].State)
+                            {
+                                exist = true;
+                                colors[l] = Tuple.Create<Tuple<int, int, int>, int>(colors[l].Item1, colors[l].Item2 + 1);
+                                l = colors.Count;
+                            }
+                        }
+                        if(!exist)
+                        {
+                            colors.Add(Tuple.Create<Tuple<int, int, int>, int>(board[X[i], Y[j]].Neighbours[k].State, 1));
+                        }
+                    }
+                    int energy = 0;
+                    for (int k = 0; k < colors.Count; ++k)
+                    {
+                        if (board[X[i], Y[j]].State != colors[k].Item1)
+                            energy += colors[k].Item2;
+                    }
+                    for (int k = 0; k < colors.Count; ++k)
+                    {
+                        if (board[X[i],Y[j]].Neighbours.Count - colors[k].Item2 < energy)
+                        {
+                            board[X[i], Y[j]].State = colors[k].Item1;
+                            k = colors.Count;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        private static void shuffle(ref int[] arr)
+        {
+            int n = arr.Count();
+
+            while(n > 1)
+            { 
+                int i = RandomMachine.Random.Next(n);
+                --n;
+                int temp = arr[i];
+                arr[i] = arr[n];
+                arr[n] = temp;
+            }
+        }
    }
 }

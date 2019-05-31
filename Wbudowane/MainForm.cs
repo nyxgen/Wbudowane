@@ -289,6 +289,25 @@ namespace Wbudowane
         {
             graphics.draw(ref board, centerOfMassCheckBox.Checked);
         }
+
+        private void monteCarloButton_Click(object sender, EventArgs e)
+        {
+            string response = Prompt.ShowDialog("How many?", "");
+            int n = 1;
+            try
+            {
+                n = Convert.ToInt32(response);
+            }
+            catch(Exception exc)
+            {
+
+            }
+            for (int i = 0; i < n; ++i)
+            {
+                Simulation.monteCarlo(ref board);
+                graphics.draw(ref board, centerOfMassCheckBox.Checked);
+            }
+        }
     }
 
     
