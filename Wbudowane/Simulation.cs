@@ -713,6 +713,7 @@ namespace Wbudowane
             double A = 86710969050178.5;
             double B = 9.41268203527779;
             double critical = 4215840000000;
+            double criticalPart = critical / (board.Size.Width * board.Size.Height);
             double part = 0.8;
 
             double ro = A / B + (1 - A / B) * Math.Pow(Math.E, -B * time);
@@ -765,7 +766,7 @@ namespace Wbudowane
             {
                 for (int j = 0; j < board.Size.Height; ++j)
                 {
-                    if(board[i,j].Density > critical)
+                    if(board[i,j].Density > criticalPart)
                     {
                         board[i, j].recrystallize();
                     }
