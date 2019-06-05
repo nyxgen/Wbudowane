@@ -12,6 +12,8 @@ namespace Wbudowane
         static string bc = "";
         static string neighbourhood = "";
         static bool ended = false;
+        static double lastRo = 1.0;
+        static double time = 0.0;
 
         public static string BC
         {
@@ -615,57 +617,62 @@ namespace Wbudowane
            }
        }
 
-        public static void monteCarlo(ref Board board)
+        public static void monteCarlo(ref Board board, double kt)
         {
-            int[] X = new int[board.Size.Width * board.Size.Height];
-            int[] Y = new int[board.Size.Width * board.Size.Height];
-            for (int i = 0; i < board.Size.Width; ++i)
+            int[] rand = new int[board.Size.Width * board.Size.Height];
+            for (int i = 0; i < board.Size.Width * board.Size.Height; ++i)
             {
-                for (int j = 0; j < board.Size.Height; ++j)
-                {
-                    X[i] = i;
-                    Y[j] = j;
-                }
+                rand[i] = i;
             }
-            shuffle(ref X);
-            shuffle(ref Y);
 
-            for (int i = 0; i < board.Size.Width; ++i)
+            shuffle(ref rand);
+
+            for (int i = 0; i < board.Size.Width * board.Size.Height; ++i)
             {
-                for (int j = 0; j < board.Size.Height; ++j)
+                int X = rand[i] % board.Size.Width;
+                int Y = rand[i] / board.Size.Width;
+                List<Tuple<Tuple<int, int, int>, int>> colors = new List<Tuple<Tuple<int, int, int>, int>>();
+                for (int k = 0; k < board[X, Y].Neighbours.Count; ++k)
                 {
-                   
-                    List<Tuple<Tuple<int, int, int>, int>> colors = new List<Tuple<Tuple<int, int, int>, int>>();
-                    for (int k = 0; k < board[X[i], Y[j]].Neighbours.Count; ++k)
+                    bool exist = false;
+                    for (int l = 0; l < colors.Count; ++l)
                     {
-                        bool exist = false;
-                        for(int l = 0; l < colors.Count; ++l)
+                        if (colors[l].Item1 == board[X, Y].Neighbours[k].State)
                         {
-                            if(colors[l].Item1 == board[X[i], Y[j]].Neighbours[k].State)
-                            {
-                                exist = true;
-                                colors[l] = Tuple.Create<Tuple<int, int, int>, int>(colors[l].Item1, colors[l].Item2 + 1);
-                                l = colors.Count;
-                            }
-                        }
-                        if(!exist)
-                        {
-                            colors.Add(Tuple.Create<Tuple<int, int, int>, int>(board[X[i], Y[j]].Neighbours[k].State, 1));
+                            exist = true;
+                            colors[l] = Tuple.Create<Tuple<int, int, int>, int>(colors[l].Item1, colors[l].Item2 + 1);
+                            l = colors.Count;
                         }
                     }
-                    int energy = 0;
-                    for (int k = 0; k < colors.Count; ++k)
+                    if (!exist)
                     {
-                        if (board[X[i], Y[j]].State != colors[k].Item1)
-                            energy += colors[k].Item2;
+                        colors.Add(Tuple.Create<Tuple<int, int, int>, int>(board[X, Y].Neighbours[k].State, 1));
                     }
-                    for (int k = 0; k < colors.Count; ++k)
+                }
+                int energy = 0;
+                for (int k = 0; k < colors.Count; ++k)
+                {
+                    if (board[X, Y].State != colors[k].Item1)
+                        energy += colors[k].Item2;
+                }
+
+                shuffle(ref colors);
+
+                for (int k = 0; k < colors.Count; ++k)
+                {
+                    if (board[X,Y].Neighbours.Count - colors[k].Item2 <= energy)
                     {
-                        if (board[X[i],Y[j]].Neighbours.Count - colors[k].Item2 < energy)
-                        {
-                            board[X[i], Y[j]].State = colors[k].Item1;
-                            k = colors.Count;
-                        }
+                        board[X, Y].State = colors[k].Item1;
+                        board[X, Y].Energy = board[X, Y].Neighbours.Count - colors[k].Item2;
+                        k = colors.Count;
+                    }
+                    else
+                    {
+                        double p = Math.Pow(Math.E, board[X, Y].Neighbours.Count - colors[k].Item2 - energy);
+                        if (p < RandomMachine.Random.NextDouble())
+                           board[X, Y].State = colors[k].Item1;
+                           board[X, Y].Energy = board[X, Y].Neighbours.Count - colors[k].Item2;
+                           k = colors.Count;
                     }
                 }
             }
@@ -685,5 +692,85 @@ namespace Wbudowane
                 arr[n] = temp;
             }
         }
-   }
+
+        private static void shuffle(ref List<Tuple<Tuple<int, int, int>, int>> arr)
+        {
+            int n = arr.Count();
+
+            while (n > 1)
+            {
+                int i = RandomMachine.Random.Next(n);
+                --n;
+                Tuple<Tuple<int, int, int>, int> temp = arr[i];
+                arr[i] = arr[n];
+                arr[n] = temp;
+            }
+        }
+
+        public static void nucleation(ref Board board)
+        {
+            time += 0.001;
+            double A = 86710969050178.5;
+            double B = 9.41268203527779;
+            double critical = 4215840000000;
+            double part = 0.8;
+
+            double ro = A / B + (1 - A / B) * Math.Pow(Math.E, -B * time);
+            double deltaRo = ro - lastRo;
+            lastRo = ro;
+            double tileRo = part * deltaRo / (board.Size.Width * board.Size.Height);
+            Console.WriteLine(tileRo);
+            for (int i = 0; i < board.Size.Width; ++i)
+            {
+                for (int j = 0; j < board.Size.Height; ++j)
+                {
+                    board[i, j].Density = tileRo;
+                }
+            }
+            double restOfRo = (1.0-part) * deltaRo;
+            bool work = true;
+            while (work)
+            {
+                int X = RandomMachine.Random.Next(board.Size.Width);
+                int Y = RandomMachine.Random.Next(board.Size.Height);
+                double partOfRo = part * deltaRo * RandomMachine.Random.NextDouble() / 3;
+                if (partOfRo > restOfRo)
+                {
+                    partOfRo = restOfRo;
+                    work = false;
+                }
+                if (board[X, Y].Energy > 0)
+                {
+                    if (RandomMachine.Random.NextDouble() > 0.2)
+                    {
+                        board[X, Y].Density += partOfRo;
+                        restOfRo -= partOfRo;
+                    }
+                }
+                else
+                {
+                    if (RandomMachine.Random.NextDouble() > 0.8)
+                    {
+                        board[X, Y].Density += partOfRo;
+                        restOfRo -= partOfRo;
+                    }
+                }
+                if (restOfRo <= 0)
+                {
+                    partOfRo = restOfRo;
+                    work = false;
+                }
+            }
+            for (int i = 0; i < board.Size.Width; ++i)
+            {
+                for (int j = 0; j < board.Size.Height; ++j)
+                {
+                    if(board[i,j].Density > critical)
+                    {
+                        board[i, j].recrystallize();
+                    }
+                }
+            }
+        }
+    }
 }

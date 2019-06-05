@@ -41,7 +41,7 @@ namespace Wbudowane
             }
         }
 
-        public void draw(ref Board board, bool centersOfMasses)
+        public void draw(ref Board board, bool centersOfMasses, bool energy, bool density)
         {
             bitmap = new Bitmap(board.Size.Width+1, board.Size.Height+1);
             for(int i = 0; i < board.Size.Width; i++)
@@ -49,7 +49,15 @@ namespace Wbudowane
                 for (int j = 0; j < board.Size.Height; j++)
                 {
                     Color color;
-                    color = Color.FromArgb(board[i, j].State.Item1, board[i, j].State.Item2, board[i, j].State.Item3);
+                    if (energy)
+                        color = Color.FromArgb(0, board[i, j].Energy * 10 % 255, 0);
+                    else
+                    {
+                        if (density)
+                            color = Color.FromArgb(0, Convert.ToInt32(board[i, j].Density/20000) % 255, 0);
+                        else
+                            color = Color.FromArgb(board[i, j].State.Item1, board[i, j].State.Item2, board[i, j].State.Item3);
+                    }
                     bitmap.SetPixel(i+1, j+1, color);
                 }
             }

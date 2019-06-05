@@ -27,13 +27,13 @@ namespace Wbudowane
 
         private void DrawButton_Click(object sender, EventArgs e)
         {
-            graphics.draw(ref board, centerOfMassCheckBox.Checked);
+            graphics.draw(ref board, centerOfMassCheckBox.Checked, energyCheckBox.Checked, densityCheckBox.Checked);
         }
 
         private void nextItterationButton_Click(object sender, EventArgs e)
         {
             Simulation.nextItteration(ref board);
-            graphics.draw(ref board, centerOfMassCheckBox.Checked);
+            graphics.draw(ref board, centerOfMassCheckBox.Checked, energyCheckBox.Checked, densityCheckBox.Checked);
         }
 
         private void randomInitButton_Click(object sender, EventArgs e)
@@ -53,7 +53,7 @@ namespace Wbudowane
                 }
             }
             board.randomInit(numberOfTiles);
-            graphics.draw(ref board, centerOfMassCheckBox.Checked);
+            graphics.draw(ref board, centerOfMassCheckBox.Checked, energyCheckBox.Checked, densityCheckBox.Checked);
         }
 
         private void homogeneousInitButton_Click(object sender, EventArgs e)
@@ -88,7 +88,7 @@ namespace Wbudowane
                 }
             }
             board.homogeneousInit(numberOfTilesX, numberOfTilesY);
-            graphics.draw(ref board, centerOfMassCheckBox.Checked);
+            graphics.draw(ref board, centerOfMassCheckBox.Checked, energyCheckBox.Checked, densityCheckBox.Checked);
         }
 
         private void radiusInitButton_Click(object sender, EventArgs e)
@@ -126,7 +126,7 @@ namespace Wbudowane
                 board.radiusInit(radius, numberOfTiles, true);
             else
                 board.radiusInit(radius, numberOfTiles, false);
-            graphics.draw(ref board, centerOfMassCheckBox.Checked);
+            graphics.draw(ref board, centerOfMassCheckBox.Checked, energyCheckBox.Checked, densityCheckBox.Checked);
         }
 
         private void mainPictureBox_Click(object sender, EventArgs e)
@@ -174,7 +174,7 @@ namespace Wbudowane
                     board[chosenPosition.X, chosenPosition.Y].State = Tuple.Create<int, int, int>(0, 0, 0);
             }
             catch(Exception exception) { };
-            graphics.draw(ref board, centerOfMassCheckBox.Checked);
+            graphics.draw(ref board, centerOfMassCheckBox.Checked, energyCheckBox.Checked, densityCheckBox.Checked);
 
         }
 
@@ -266,7 +266,7 @@ namespace Wbudowane
             }
             board = new Board(new Size(sizeX, sizeY));
             Simulation.initVonNeumann(ref board);
-            graphics.draw(ref board, centerOfMassCheckBox.Checked);
+            graphics.draw(ref board, centerOfMassCheckBox.Checked, energyCheckBox.Checked, densityCheckBox.Checked);
         }
 
         private void toEndButton_Click(object sender, EventArgs e)
@@ -274,7 +274,7 @@ namespace Wbudowane
             do
             {
                 Simulation.nextItteration(ref board);
-                graphics.draw(ref board, centerOfMassCheckBox.Checked);
+                graphics.draw(ref board, centerOfMassCheckBox.Checked, energyCheckBox.Checked, densityCheckBox.Checked);
             }
             while (Simulation.Ended == false);
         }
@@ -282,12 +282,12 @@ namespace Wbudowane
         private void clearBoardButton_Click(object sender, EventArgs e)
         {
             board.clear();
-            graphics.draw(ref board, centerOfMassCheckBox.Checked);
+            graphics.draw(ref board, centerOfMassCheckBox.Checked, energyCheckBox.Checked, densityCheckBox.Checked);
         }
 
         private void centerOfMassCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            graphics.draw(ref board, centerOfMassCheckBox.Checked);
+            graphics.draw(ref board, centerOfMassCheckBox.Checked, energyCheckBox.Checked, densityCheckBox.Checked);
         }
 
         private void monteCarloButton_Click(object sender, EventArgs e)
@@ -304,9 +304,15 @@ namespace Wbudowane
             }
             for (int i = 0; i < n; ++i)
             {
-                Simulation.monteCarlo(ref board);
-                graphics.draw(ref board, centerOfMassCheckBox.Checked);
+                Simulation.monteCarlo(ref board, Convert.ToDouble(mcNumericUpDown.Value));
             }
+            graphics.draw(ref board, centerOfMassCheckBox.Checked, energyCheckBox.Checked, densityCheckBox.Checked);
+        }
+
+        private void nucleationButton_Click(object sender, EventArgs e)
+        {
+            Simulation.nucleation(ref board);
+            graphics.draw(ref board, centerOfMassCheckBox.Checked, energyCheckBox.Checked, densityCheckBox.Checked);
         }
     }
 

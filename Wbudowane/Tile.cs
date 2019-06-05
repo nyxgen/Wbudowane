@@ -12,7 +12,10 @@ namespace Wbudowane
         Tuple <int, int, int>state;
         List<Tile> neighbours;
         bool alive;
+        int energy = 0;
+        double density = 0;
         PointF centerOfMass;
+        bool recrystallization = false;
         public Tile()
         {
             neighbours = new List<Tile>();
@@ -74,6 +77,49 @@ namespace Wbudowane
             {
                 return ref neighbours;
             }
+        }
+
+        public int Energy
+        {
+            get
+            {
+                return energy;
+            }
+            set
+            {
+                energy = value;
+            }
+        }
+
+        public double Density
+        {
+            get
+            {
+                return density;
+            }
+            set
+            {
+                density = value;
+            }
+        }
+
+        public bool Recrystallization
+        {
+            get
+            {
+                return recrystallization;
+            }
+            set
+            {
+                recrystallization = value;
+            }
+        }
+
+        public void recrystallize()
+        {
+            recrystallization = true;
+            state = new Tuple<int, int, int>(state.Item1, 0, 0);
+            density = 0;
         }
     }
 }

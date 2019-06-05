@@ -48,8 +48,14 @@
             this.initGroupBox = new System.Windows.Forms.GroupBox();
             this.itterationGroupBox = new System.Windows.Forms.GroupBox();
             this.displayGroupBox = new System.Windows.Forms.GroupBox();
+            this.energyCheckBox = new System.Windows.Forms.CheckBox();
             this.centerOfMassCheckBox = new System.Windows.Forms.CheckBox();
+            this.monteCarloGroupBox = new System.Windows.Forms.GroupBox();
+            this.mcNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.monteCarloButton = new System.Windows.Forms.Button();
+            this.nucleationGroupBox = new System.Windows.Forms.GroupBox();
+            this.nucleationButton = new System.Windows.Forms.Button();
+            this.densityCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).BeginInit();
             this.bcGroupBox.SuspendLayout();
             this.drawingToolsGroupBox.SuspendLayout();
@@ -57,6 +63,9 @@
             this.initGroupBox.SuspendLayout();
             this.itterationGroupBox.SuspendLayout();
             this.displayGroupBox.SuspendLayout();
+            this.monteCarloGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mcNumericUpDown)).BeginInit();
+            this.nucleationGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainPictureBox
@@ -285,13 +294,31 @@
             // 
             // displayGroupBox
             // 
+            this.displayGroupBox.Controls.Add(this.densityCheckBox);
+            this.displayGroupBox.Controls.Add(this.energyCheckBox);
             this.displayGroupBox.Controls.Add(this.centerOfMassCheckBox);
             this.displayGroupBox.Location = new System.Drawing.Point(571, 452);
             this.displayGroupBox.Name = "displayGroupBox";
-            this.displayGroupBox.Size = new System.Drawing.Size(143, 52);
+            this.displayGroupBox.Size = new System.Drawing.Size(143, 110);
             this.displayGroupBox.TabIndex = 24;
             this.displayGroupBox.TabStop = false;
             this.displayGroupBox.Text = "Display";
+            // 
+            // energyCheckBox
+            // 
+            this.energyCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.energyCheckBox.AutoSize = true;
+            this.energyCheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.energyCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.energyCheckBox.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
+            this.energyCheckBox.FlatAppearance.CheckedBackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.energyCheckBox.Location = new System.Drawing.Point(31, 48);
+            this.energyCheckBox.Name = "energyCheckBox";
+            this.energyCheckBox.Size = new System.Drawing.Size(86, 23);
+            this.energyCheckBox.TabIndex = 1;
+            this.energyCheckBox.Text = "      Energy      ";
+            this.energyCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.energyCheckBox.UseVisualStyleBackColor = true;
             // 
             // centerOfMassCheckBox
             // 
@@ -309,23 +336,97 @@
             this.centerOfMassCheckBox.UseVisualStyleBackColor = true;
             this.centerOfMassCheckBox.CheckedChanged += new System.EventHandler(this.centerOfMassCheckBox_CheckedChanged);
             // 
+            // monteCarloGroupBox
+            // 
+            this.monteCarloGroupBox.Controls.Add(this.mcNumericUpDown);
+            this.monteCarloGroupBox.Controls.Add(this.monteCarloButton);
+            this.monteCarloGroupBox.Location = new System.Drawing.Point(720, 12);
+            this.monteCarloGroupBox.Name = "monteCarloGroupBox";
+            this.monteCarloGroupBox.Size = new System.Drawing.Size(138, 81);
+            this.monteCarloGroupBox.TabIndex = 25;
+            this.monteCarloGroupBox.TabStop = false;
+            this.monteCarloGroupBox.Text = "Monte Carlo";
+            // 
+            // mcNumericUpDown
+            // 
+            this.mcNumericUpDown.DecimalPlaces = 1;
+            this.mcNumericUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.mcNumericUpDown.Location = new System.Drawing.Point(27, 50);
+            this.mcNumericUpDown.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.mcNumericUpDown.Minimum = new decimal(new int[] {
+            6,
+            0,
+            0,
+            -2147483648});
+            this.mcNumericUpDown.Name = "mcNumericUpDown";
+            this.mcNumericUpDown.Size = new System.Drawing.Size(88, 20);
+            this.mcNumericUpDown.TabIndex = 3;
+            this.mcNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // monteCarloButton
             // 
-            this.monteCarloButton.Location = new System.Drawing.Point(601, 510);
+            this.monteCarloButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.monteCarloButton.Location = new System.Drawing.Point(27, 19);
             this.monteCarloButton.Name = "monteCarloButton";
             this.monteCarloButton.Size = new System.Drawing.Size(88, 23);
-            this.monteCarloButton.TabIndex = 1;
+            this.monteCarloButton.TabIndex = 2;
             this.monteCarloButton.Text = "Monte Carlo";
             this.monteCarloButton.UseVisualStyleBackColor = true;
             this.monteCarloButton.Click += new System.EventHandler(this.monteCarloButton_Click);
+            // 
+            // nucleationGroupBox
+            // 
+            this.nucleationGroupBox.Controls.Add(this.nucleationButton);
+            this.nucleationGroupBox.Location = new System.Drawing.Point(720, 99);
+            this.nucleationGroupBox.Name = "nucleationGroupBox";
+            this.nucleationGroupBox.Size = new System.Drawing.Size(138, 114);
+            this.nucleationGroupBox.TabIndex = 26;
+            this.nucleationGroupBox.TabStop = false;
+            this.nucleationGroupBox.Text = "Nucleation";
+            // 
+            // nucleationButton
+            // 
+            this.nucleationButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.nucleationButton.Location = new System.Drawing.Point(27, 19);
+            this.nucleationButton.Name = "nucleationButton";
+            this.nucleationButton.Size = new System.Drawing.Size(75, 23);
+            this.nucleationButton.TabIndex = 0;
+            this.nucleationButton.Text = "Nucleation";
+            this.nucleationButton.UseVisualStyleBackColor = true;
+            this.nucleationButton.Click += new System.EventHandler(this.nucleationButton_Click);
+            // 
+            // densityCheckBox
+            // 
+            this.densityCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.densityCheckBox.AutoSize = true;
+            this.densityCheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.densityCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.densityCheckBox.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
+            this.densityCheckBox.FlatAppearance.CheckedBackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.densityCheckBox.Location = new System.Drawing.Point(30, 77);
+            this.densityCheckBox.Name = "densityCheckBox";
+            this.densityCheckBox.Size = new System.Drawing.Size(88, 23);
+            this.densityCheckBox.TabIndex = 2;
+            this.densityCheckBox.Text = "      Density      ";
+            this.densityCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.densityCheckBox.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.ClientSize = new System.Drawing.Size(719, 581);
-            this.Controls.Add(this.monteCarloButton);
+            this.ClientSize = new System.Drawing.Size(870, 581);
+            this.Controls.Add(this.nucleationGroupBox);
+            this.Controls.Add(this.monteCarloGroupBox);
             this.Controls.Add(this.displayGroupBox);
             this.Controls.Add(this.itterationGroupBox);
             this.Controls.Add(this.initGroupBox);
@@ -344,6 +445,9 @@
             this.itterationGroupBox.ResumeLayout(false);
             this.displayGroupBox.ResumeLayout(false);
             this.displayGroupBox.PerformLayout();
+            this.monteCarloGroupBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.mcNumericUpDown)).EndInit();
+            this.nucleationGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -371,7 +475,13 @@
         private System.Windows.Forms.ComboBox neighbourhoodComboBox;
         private System.Windows.Forms.GroupBox displayGroupBox;
         private System.Windows.Forms.CheckBox centerOfMassCheckBox;
+        private System.Windows.Forms.CheckBox energyCheckBox;
+        private System.Windows.Forms.GroupBox monteCarloGroupBox;
+        private System.Windows.Forms.NumericUpDown mcNumericUpDown;
         private System.Windows.Forms.Button monteCarloButton;
+        private System.Windows.Forms.GroupBox nucleationGroupBox;
+        private System.Windows.Forms.Button nucleationButton;
+        private System.Windows.Forms.CheckBox densityCheckBox;
     }
 }
 
