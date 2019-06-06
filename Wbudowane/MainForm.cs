@@ -311,10 +311,26 @@ namespace Wbudowane
 
         private void nucleationButton_Click(object sender, EventArgs e)
         {
-            Simulation.nucleation(ref board);
-            graphics.draw(ref board, centerOfMassCheckBox.Checked, energyCheckBox.Checked, densityCheckBox.Checked);
+            string response = Prompt.ShowDialog("How many?", "");
+            int n = 1;
+            try
+            {
+                n = Convert.ToInt32(response);
+            }
+            catch (Exception exc)
+            {
+
+            }
+            for (int i = 0; i < n; ++i)
+            {
+                Simulation.nucleation(ref board);
+                graphics.draw(ref board, centerOfMassCheckBox.Checked, energyCheckBox.Checked, densityCheckBox.Checked);
+            }
+        }
+
+        private void restartButton_Click(object sender, EventArgs e)
+        {
+            Simulation.restart();
         }
     }
-
-    
 }

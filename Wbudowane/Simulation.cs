@@ -707,20 +707,62 @@ namespace Wbudowane
             }
         }
 
+        private static void calcEnergy(ref Board board)
+        {
+            int[] rand = new int[board.Size.Width * board.Size.Height];
+            for (int i = 0; i < board.Size.Width * board.Size.Height; ++i)
+            {
+                rand[i] = i;
+            }
+
+            shuffle(ref rand);
+
+            for (int i = 0; i < board.Size.Width * board.Size.Height; ++i)
+            {
+                int X = rand[i] % board.Size.Width;
+                int Y = rand[i] / board.Size.Width;
+                List<Tuple<Tuple<int, int, int>, int>> colors = new List<Tuple<Tuple<int, int, int>, int>>();
+                for (int k = 0; k < board[X, Y].Neighbours.Count; ++k)
+                {
+                    bool exist = false;
+                    for (int l = 0; l < colors.Count; ++l)
+                    {
+                        if (colors[l].Item1 == board[X, Y].Neighbours[k].State)
+                        {
+                            exist = true;
+                            colors[l] = Tuple.Create<Tuple<int, int, int>, int>(colors[l].Item1, colors[l].Item2 + 1);
+                            l = colors.Count;
+                        }
+                    }
+                    if (!exist)
+                    {
+                        colors.Add(Tuple.Create<Tuple<int, int, int>, int>(board[X, Y].Neighbours[k].State, 1));
+                    }
+                }
+                int energy = 0;
+                for (int k = 0; k < colors.Count; ++k)
+                {
+                    if (board[X, Y].State != colors[k].Item1)
+                        energy += colors[k].Item2;
+                }
+                board[X, Y].Energy = energy;
+            }
+        }
+
         public static void nucleation(ref Board board)
         {
+            calcEnergy(ref board);
             time += 0.001;
             double A = 86710969050178.5;
             double B = 9.41268203527779;
             double critical = 4215840000000;
             double criticalPart = critical / (board.Size.Width * board.Size.Height);
-            double part = 0.8;
+            double part = 0.4;
 
             double ro = A / B + (1 - A / B) * Math.Pow(Math.E, -B * time);
             double deltaRo = ro - lastRo;
             lastRo = ro;
             double tileRo = part * deltaRo / (board.Size.Width * board.Size.Height);
-            Console.WriteLine(tileRo);
             for (int i = 0; i < board.Size.Width; ++i)
             {
                 for (int j = 0; j < board.Size.Height; ++j)
@@ -730,11 +772,12 @@ namespace Wbudowane
             }
             double restOfRo = (1.0-part) * deltaRo;
             bool work = true;
+            double partOfRo = restOfRo * RandomMachine.Random.NextDouble() / 10;
             while (work)
             {
                 int X = RandomMachine.Random.Next(board.Size.Width);
                 int Y = RandomMachine.Random.Next(board.Size.Height);
-                double partOfRo = part * deltaRo * RandomMachine.Random.NextDouble() / 3;
+                
                 if (partOfRo > restOfRo)
                 {
                     partOfRo = restOfRo;
@@ -762,16 +805,66 @@ namespace Wbudowane
                     work = false;
                 }
             }
+
+            Board copyBoard = new Board(ref board);
             for (int i = 0; i < board.Size.Width; ++i)
             {
                 for (int j = 0; j < board.Size.Height; ++j)
                 {
-                    if(board[i,j].Density > criticalPart)
+                    copyBoard[i, j].Recrystallization = false;
+                }
+            }
+
+            for (int i = 0; i < board.Size.Width; ++i)
+            {
+                for (int j = 0; j < board.Size.Height; ++j)
+                {
+                    bool recrystal = false;
+                    bool greaterDensity = true;
+                    int recrystalNumber = -1;
+                    for(int k = 0; k < board[i,j].Neighbours.Count; ++k)
+                    {
+                        if (board[i, j].Neighbours[k].Recrystallization == true)
+                        {
+                            recrystal = true;
+                            recrystalNumber = k;
+                        }
+                        if ((board[i, j].Density <= board[i, j].Neighbours[k].Density) && (recrystalNumber != k))
+                            greaterDensity = false;
+                    }
+                    if (recrystal && greaterDensity)
+                    {
+                        copyBoard[i, j].recrystallize();
+                        copyBoard[i, j].State = board[i, j].Neighbours[recrystalNumber].State;
+                    }
+                }
+            }
+
+            for (int i = 0; i < board.Size.Width; ++i)
+            {
+                for (int j = 0; j < board.Size.Height; ++j)
+                {
+                    board[i, j].Recrystallization = copyBoard[i,j].Recrystallization;
+                    board[i, j].State = copyBoard[i, j].State;
+                }
+            }
+
+            for (int i = 0; i < board.Size.Width; ++i)
+            {
+                for (int j = 0; j < board.Size.Height; ++j)
+                {
+                    board[i, j].Recrystallization = false;
+                    if (board[i,j].Density > criticalPart && board[i, j].Energy > 0)
                     {
                         board[i, j].recrystallize();
                     }
                 }
             }
+        }
+
+        public static void restart()
+        {
+            time = 0;
         }
     }
 }

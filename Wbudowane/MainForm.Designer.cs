@@ -48,6 +48,7 @@
             this.initGroupBox = new System.Windows.Forms.GroupBox();
             this.itterationGroupBox = new System.Windows.Forms.GroupBox();
             this.displayGroupBox = new System.Windows.Forms.GroupBox();
+            this.densityCheckBox = new System.Windows.Forms.CheckBox();
             this.energyCheckBox = new System.Windows.Forms.CheckBox();
             this.centerOfMassCheckBox = new System.Windows.Forms.CheckBox();
             this.monteCarloGroupBox = new System.Windows.Forms.GroupBox();
@@ -55,7 +56,7 @@
             this.monteCarloButton = new System.Windows.Forms.Button();
             this.nucleationGroupBox = new System.Windows.Forms.GroupBox();
             this.nucleationButton = new System.Windows.Forms.Button();
-            this.densityCheckBox = new System.Windows.Forms.CheckBox();
+            this.restartButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).BeginInit();
             this.bcGroupBox.SuspendLayout();
             this.drawingToolsGroupBox.SuspendLayout();
@@ -304,6 +305,22 @@
             this.displayGroupBox.TabStop = false;
             this.displayGroupBox.Text = "Display";
             // 
+            // densityCheckBox
+            // 
+            this.densityCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.densityCheckBox.AutoSize = true;
+            this.densityCheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.densityCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.densityCheckBox.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
+            this.densityCheckBox.FlatAppearance.CheckedBackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.densityCheckBox.Location = new System.Drawing.Point(30, 77);
+            this.densityCheckBox.Name = "densityCheckBox";
+            this.densityCheckBox.Size = new System.Drawing.Size(88, 23);
+            this.densityCheckBox.TabIndex = 2;
+            this.densityCheckBox.Text = "      Density      ";
+            this.densityCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.densityCheckBox.UseVisualStyleBackColor = true;
+            // 
             // energyCheckBox
             // 
             this.energyCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
@@ -384,6 +401,7 @@
             // 
             // nucleationGroupBox
             // 
+            this.nucleationGroupBox.Controls.Add(this.restartButton);
             this.nucleationGroupBox.Controls.Add(this.nucleationButton);
             this.nucleationGroupBox.Location = new System.Drawing.Point(720, 99);
             this.nucleationGroupBox.Name = "nucleationGroupBox";
@@ -403,21 +421,16 @@
             this.nucleationButton.UseVisualStyleBackColor = true;
             this.nucleationButton.Click += new System.EventHandler(this.nucleationButton_Click);
             // 
-            // densityCheckBox
+            // restartButton
             // 
-            this.densityCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
-            this.densityCheckBox.AutoSize = true;
-            this.densityCheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.densityCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.densityCheckBox.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
-            this.densityCheckBox.FlatAppearance.CheckedBackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.densityCheckBox.Location = new System.Drawing.Point(30, 77);
-            this.densityCheckBox.Name = "densityCheckBox";
-            this.densityCheckBox.Size = new System.Drawing.Size(88, 23);
-            this.densityCheckBox.TabIndex = 2;
-            this.densityCheckBox.Text = "      Density      ";
-            this.densityCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.densityCheckBox.UseVisualStyleBackColor = true;
+            this.restartButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.restartButton.Location = new System.Drawing.Point(27, 49);
+            this.restartButton.Name = "restartButton";
+            this.restartButton.Size = new System.Drawing.Size(75, 23);
+            this.restartButton.TabIndex = 1;
+            this.restartButton.Text = "Restart";
+            this.restartButton.UseVisualStyleBackColor = true;
+            this.restartButton.Click += new System.EventHandler(this.restartButton_Click);
             // 
             // MainForm
             // 
@@ -482,6 +495,7 @@
         private System.Windows.Forms.GroupBox nucleationGroupBox;
         private System.Windows.Forms.Button nucleationButton;
         private System.Windows.Forms.CheckBox densityCheckBox;
+        private System.Windows.Forms.Button restartButton;
     }
 }
 

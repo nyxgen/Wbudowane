@@ -54,7 +54,7 @@ namespace Wbudowane
                     else
                     {
                         if (density)
-                            color = Color.FromArgb(0, Convert.ToInt32(board[i, j].Density/20000) % 255, 0);
+                            color = Color.FromArgb(0, Convert.ToInt32(board[i, j].Density/1000) % 255, 0);
                         else
                             color = Color.FromArgb(board[i, j].State.Item1, board[i, j].State.Item2, board[i, j].State.Item3);
                     }
