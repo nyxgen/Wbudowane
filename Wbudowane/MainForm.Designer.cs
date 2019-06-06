@@ -55,8 +55,8 @@
             this.mcNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.monteCarloButton = new System.Windows.Forms.Button();
             this.nucleationGroupBox = new System.Windows.Forms.GroupBox();
-            this.nucleationButton = new System.Windows.Forms.Button();
             this.restartButton = new System.Windows.Forms.Button();
+            this.nucleationButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).BeginInit();
             this.bcGroupBox.SuspendLayout();
             this.drawingToolsGroupBox.SuspendLayout();
@@ -374,19 +374,24 @@
             65536});
             this.mcNumericUpDown.Location = new System.Drawing.Point(27, 50);
             this.mcNumericUpDown.Maximum = new decimal(new int[] {
+            6,
+            0,
+            0,
+            0});
+            this.mcNumericUpDown.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             65536});
-            this.mcNumericUpDown.Minimum = new decimal(new int[] {
-            6,
-            0,
-            0,
-            -2147483648});
             this.mcNumericUpDown.Name = "mcNumericUpDown";
             this.mcNumericUpDown.Size = new System.Drawing.Size(88, 20);
             this.mcNumericUpDown.TabIndex = 3;
             this.mcNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.mcNumericUpDown.Value = new decimal(new int[] {
+            6,
+            0,
+            0,
+            0});
             // 
             // monteCarloButton
             // 
@@ -410,17 +415,6 @@
             this.nucleationGroupBox.TabStop = false;
             this.nucleationGroupBox.Text = "Nucleation";
             // 
-            // nucleationButton
-            // 
-            this.nucleationButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.nucleationButton.Location = new System.Drawing.Point(27, 19);
-            this.nucleationButton.Name = "nucleationButton";
-            this.nucleationButton.Size = new System.Drawing.Size(75, 23);
-            this.nucleationButton.TabIndex = 0;
-            this.nucleationButton.Text = "Nucleation";
-            this.nucleationButton.UseVisualStyleBackColor = true;
-            this.nucleationButton.Click += new System.EventHandler(this.nucleationButton_Click);
-            // 
             // restartButton
             // 
             this.restartButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
@@ -431,6 +425,17 @@
             this.restartButton.Text = "Restart";
             this.restartButton.UseVisualStyleBackColor = true;
             this.restartButton.Click += new System.EventHandler(this.restartButton_Click);
+            // 
+            // nucleationButton
+            // 
+            this.nucleationButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.nucleationButton.Location = new System.Drawing.Point(27, 19);
+            this.nucleationButton.Name = "nucleationButton";
+            this.nucleationButton.Size = new System.Drawing.Size(75, 23);
+            this.nucleationButton.TabIndex = 0;
+            this.nucleationButton.Text = "Nucleation";
+            this.nucleationButton.UseVisualStyleBackColor = true;
+            this.nucleationButton.Click += new System.EventHandler(this.nucleationButton_Click);
             // 
             // MainForm
             // 

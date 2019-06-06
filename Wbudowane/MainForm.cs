@@ -305,6 +305,7 @@ namespace Wbudowane
             for (int i = 0; i < n; ++i)
             {
                 Simulation.monteCarlo(ref board, Convert.ToDouble(mcNumericUpDown.Value));
+                graphics.draw(ref board, centerOfMassCheckBox.Checked, energyCheckBox.Checked, densityCheckBox.Checked);
             }
             graphics.draw(ref board, centerOfMassCheckBox.Checked, energyCheckBox.Checked, densityCheckBox.Checked);
         }

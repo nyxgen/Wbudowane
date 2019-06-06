@@ -668,7 +668,7 @@ namespace Wbudowane
                     }
                     else
                     {
-                        double p = Math.Pow(Math.E, board[X, Y].Neighbours.Count - colors[k].Item2 - energy);
+                        double p = Math.Pow(Math.E, (board[X, Y].Neighbours.Count - colors[k].Item2 - energy)/kt);
                         if (p < RandomMachine.Random.NextDouble())
                            board[X, Y].State = colors[k].Item1;
                            board[X, Y].Energy = board[X, Y].Neighbours.Count - colors[k].Item2;
